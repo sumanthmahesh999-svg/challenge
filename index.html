@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Education Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Include Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* CSS */
+
+    :root {
+      --sidebar-width: 220px;
+      --primary-color: #4a76a8;
+      --secondary-color: #2c3e50;
+      --bg-color: #f4f7fa;
+      --card-bg: #ffffff;
+      --font-color: #333333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      color: var(--font-color);
+      background-color: var(--bg-color);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--secondary-color);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.5em;
+    }
+    .sidebar ul {
+      list-style: none;
+      flex: 1;
+    }
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 1em;
+      display: block;
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+    .sidebar ul li a:hover {
+      background-color: var(--primary-color);
+    }
+
+    /* Main content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+    }
+
+    /* Header */
+    .header {
+      background-color: var(--card-bg);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+    }
+    .header .search-box input {
+      padding: 8px 12px;
+      font-size: 1em;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .header .user-info {
+      display: flex;
+      align-items: center;
+    }
+    .header .user-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-left: 10px;
+    }
+
+    /* Content area */
+    .content {
+      padding: 20px 30px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card h3 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .card p {
+      font-size: 2em;
+      margin: 0;
+    }
+
+    /* Chart section */
+    .chart-container {
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    /* Table section */
+    .table-container {
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table thead {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    table th, table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      body {
+        flex-direction: column;
+      }
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <!-- HTML -->
+
+  <div class="sidebar">
+    <h2>EduDash</h2>
+    <ul>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Students</a></li>
+      <li><a href="#">Teachers</a></li>
+      <li><a href="#">Courses</a></li>
+      <li><a href="#">Attendance</a></li>
+      <li><a href="#">Reports</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <div class="header">
+      <div class="search-box">
+        <input type="text" placeholder="Search students, courses...">
+      </div>
+      <div class="user-info">
+        <span>Welcome, Admin</span>
+        <img src="https://via.placeholder.com/40" alt="User Avatar">
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Cards for statistics -->
+      <div class="cards">
+        <div class="card">
+          <h3>Total Students</h3>
+          <p id="total-students">1200</p>
+        </div>
+        <div class="card">
+          <h3>Total Teachers</h3>
+          <p id="total-teachers">75</p>
+        </div>
+        <div class="card">
+          <h3>Courses Offered</h3>
+          <p id="total-courses">35</p>
+        </div>
+        <div class="card">
+          <h3>Attendance Rate</h3>
+          <p id="attendance-rate">89%</p>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-container">
+        <canvas id="performanceChart"></canvas>
+      </div>
+
+      <!-- Recent Students Table -->
+      <div class="table-container">
+        <h3>Recent Students</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Course</th>
+              <th>Enrollment Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recent-students-body">
+            <tr>
+              <td>Alice Johnson</td>
+              <td>Biology</td>
+              <td>2025-08-20</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Bob Smith</td>
+              <td>Physics</td>
+              <td>2025-08-18</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Carol Lee</td>
+              <td>Chemistry</td>
+              <td>2025-08-17</td>
+              <td>Inactive</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript
+
+    // Example data for chart
+    const performanceData = {
+      labels: ['Math', 'Science', 'English', 'History', 'Art'],
+      datasets: [
+        {
+          label: 'Average Score (%)',
+          data: [78, 85, 82, 74, 90],
+          backgroundColor: 'rgba(74,118,168,0.6)',
+          borderColor: 'rgba(74,118,168,1)',
+          borderWidth: 1
+        }
+      ]
+    };
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+      // initialize chart
+      const ctx = document.getElementById('performanceChart').getContext('2d');
+      const performanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: performanceData,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          }
+        }
+      });
+
+      // You can also load data dynamically, e.g., via fetch from API
+      // Example: fetch('/api/students/recent').then(...)
+
+    });
+  </script>
+</body>
+</html>
